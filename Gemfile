@@ -17,6 +17,8 @@ group :assets do
 end
 
 gem 'jquery-rails'
+gem "execjs"
+
 
 # Use unicorn as the web server
 # gem 'unicorn'
