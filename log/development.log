@@ -29114,3 +29114,206 @@ ActionController::RoutingError (No route matches [GET] "/javascripts/jquery-ui-1
   
 
 Rendered C:/RailsInstaller/Ruby1.9.2/lib/ruby/gems/1.9.1/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (1.0ms)
+  [1m[36m (0.0ms)[0m  [1mselect sqlite_version(*)[0m
+  [1m[35m (8.0ms)[0m  CREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) 
+  [1m[36m (0.0ms)[0m  [1mPRAGMA index_list("schema_migrations")[0m
+  [1m[35m (10.0ms)[0m  CREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")
+  [1m[36m (0.0ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+Migrating to CreateUsers (20110927220751)
+  [1m[35m (1.0ms)[0m  CREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "uname" varchar(255), "name" varchar(255), "email" varchar(255), "password" varchar(255), "admin_perm" boolean, "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (0.0ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ('20110927220751')[0m
+Migrating to CreatePosts (20110927223115)
+  [1m[35m (2.0ms)[0m  CREATE TABLE "posts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "question" text, "user_id" integer, "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (0.0ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ('20110927223115')[0m
+Migrating to CreateComments (20110927223619)
+  [1m[35m (48.0ms)[0m  CREATE TABLE "comments" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "reply" text, "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (0.0ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ('20110927223619')[0m
+Migrating to CreateVotes (20110927224620)
+  [1m[35m (1.0ms)[0m  CREATE TABLE "votes" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "user_id" integer, "post_id" integer, "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (0.0ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ('20110927224620')[0m
+Migrating to CreateCommentVotes (20110927232642)
+  [1m[35m (2.0ms)[0m  CREATE TABLE "comment_votes" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "post_id" integer, "user_id" integer, "comment_id" integer, "created_at" datetime, "updated_at" datetime) 
+  [1m[36m (0.0ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ('20110927232642')[0m
+Migrating to AddColumnsToComments (20110930222556)
+  [1m[35m (2.0ms)[0m  ALTER TABLE "comments" ADD "post_id" integer
+  [1m[36m (0.0ms)[0m  [1mALTER TABLE "comments" ADD "user_id" integer[0m
+  [1m[35m (0.0ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('20110930222556')
+Migrating to AddColumnToPosts (20111002073849)
+  [1m[36m (2.0ms)[0m  [1mALTER TABLE "posts" ADD "numVotes" integer DEFAULT 0[0m
+  [1m[35m (0.0ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('20111002073849')
+Migrating to AddSaltHashedPasswordToUser (20111002224214)
+  [1m[36m (3.0ms)[0m  [1mALTER TABLE "users" ADD "salt" varchar(255)[0m
+  [1m[35m (0.0ms)[0m  ALTER TABLE "users" ADD "hashed_password" varchar(255)
+  [1m[36m (0.0ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ('20111002224214')[0m
+Migrating to RemovePasswordFromUser (20111002224404)
+  [1m[35m (1.0ms)[0m  CREATE TEMPORARY TABLE "altered_users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "uname" varchar(255), "name" varchar(255), "email" varchar(255), "password" varchar(255), "admin_perm" boolean, "created_at" datetime, "updated_at" datetime, "salt" varchar(255), "hashed_password" varchar(255)) 
+  [1m[36m (0.0ms)[0m  [1mPRAGMA index_list("users")[0m
+  [1m[35m (1.0ms)[0m  SELECT * FROM "users"
+  [1m[36m (2.0ms)[0m  [1mDROP TABLE "users"[0m
+  [1m[35m (1.0ms)[0m  CREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "uname" varchar(255), "name" varchar(255), "email" varchar(255), "admin_perm" boolean, "created_at" datetime, "updated_at" datetime, "salt" varchar(255), "hashed_password" varchar(255)) 
+  [1m[36m (0.0ms)[0m  [1mPRAGMA index_list("altered_users")[0m
+  [1m[35m (1.0ms)[0m  SELECT * FROM "altered_users"
+  [1m[36m (1.0ms)[0m  [1mDROP TABLE "altered_users"[0m
+  [1m[35m (1.0ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES ('20111002224404')
+Migrating to AddToUser (20111003002823)
+  [1m[36m (0.0ms)[0m  [1mSELECT 1 FROM "users" WHERE "users"."uname" = 'admin' LIMIT 1[0m
+  [1m[35mSQL (56.0ms)[0m  INSERT INTO "users" ("admin_perm", "created_at", "email", "hashed_password", "name", "salt", "uname", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?, ?)  [["admin_perm", true], ["created_at", Fri, 07 Oct 2011 21:29:01 UTC +00:00], ["email", nil], ["hashed_password", "88824915f126f905167b13fb9a64fc88219e4d2165e5a2c6d939659d6519cdb5"], ["name", "admin"], ["salt", "396127440.739111634267147"], ["uname", "admin"], ["updated_at", Fri, 07 Oct 2011 21:29:01 UTC +00:00]]
+  [1m[36m (0.0ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES ('20111003002823')[0m
+  [1m[35m (1.0ms)[0m  select sqlite_version(*)
+  [1m[36m (0.0ms)[0m  [1mSELECT "schema_migrations"."version" FROM "schema_migrations" [0m
+  [1m[35m (0.0ms)[0m  PRAGMA index_list("comment_votes")
+  [1m[36m (0.0ms)[0m  [1mPRAGMA index_list("comments")[0m
+  [1m[35m (0.0ms)[0m  PRAGMA index_list("posts")
+  [1m[36m (1.0ms)[0m  [1mPRAGMA index_list("users")[0m
+  [1m[35m (0.0ms)[0m  PRAGMA index_list("votes")
+
+
+Started GET "/" for 127.0.0.1 at 2011-10-07 17:30:15 -0400
+  Processing by LoginController#index as HTML
+Rendered login/index.html.erb within layouts/application (106.0ms)
+Compiled application.css  (23ms)  (pid 1372)
+Compiled comment_votes.css  (12ms)  (pid 1372)
+Compiled comments.css  (13ms)  (pid 1372)
+Compiled posts.css  (26ms)  (pid 1372)
+Compiled scaffolds.css  (36ms)  (pid 1372)
+Compiled ui-lightness/jquery-ui-1.8.13.custom.css  (23ms)  (pid 1372)
+Compiled users.css  (5ms)  (pid 1372)
+Compiled votes.css  (4ms)  (pid 1372)
+Compiled application.js  (22ms)  (pid 1372)
+Compiled jquery.js  (71ms)  (pid 1372)
+Compiled jquery_ujs.js  (21ms)  (pid 1372)
+Compiled comment_votes.js  (565ms)  (pid 1372)
+Compiled comments.js  (150ms)  (pid 1372)
+Compiled jquery-ui-1.8.13.custom.min.js  (49ms)  (pid 1372)
+Compiled posts.js  (148ms)  (pid 1372)
+Compiled users.js  (162ms)  (pid 1372)
+Compiled votes.js  (205ms)  (pid 1372)
+Completed 200 OK in 3340ms (Views: 2658.2ms | ActiveRecord: 2.0ms)
+
+
+Started GET "/assets/application.css?body=1" for 127.0.0.1 at 2011-10-07 17:30:30 -0400
+Served asset /application.css - 200 OK (51ms)
+
+
+Started GET "/assets/comment_votes.css?body=1" for 127.0.0.1 at 2011-10-07 17:30:30 -0400
+Served asset /comment_votes.css - 200 OK (18ms)
+
+
+Started GET "/assets/comments.css?body=1" for 127.0.0.1 at 2011-10-07 17:30:30 -0400
+Served asset /comments.css - 200 OK (19ms)
+
+
+Started GET "/assets/posts.css?body=1" for 127.0.0.1 at 2011-10-07 17:30:30 -0400
+Served asset /posts.css - 200 OK (14ms)
+
+
+Started GET "/assets/scaffolds.css?body=1" for 127.0.0.1 at 2011-10-07 17:30:30 -0400
+Served asset /scaffolds.css - 200 OK (32ms)
+
+
+Started GET "/assets/ui-lightness/jquery-ui-1.8.13.custom.css?body=1" for 127.0.0.1 at 2011-10-07 17:30:30 -0400
+Served asset /ui-lightness/jquery-ui-1.8.13.custom.css - 200 OK (73ms)
+
+
+Started GET "/assets/users.css?body=1" for 127.0.0.1 at 2011-10-07 17:30:30 -0400
+Served asset /users.css - 200 OK (27ms)
+
+
+Started GET "/assets/votes.css?body=1" for 127.0.0.1 at 2011-10-07 17:30:30 -0400
+Served asset /votes.css - 200 OK (25ms)
+
+
+Started GET "/assets/jquery.js?body=1" for 127.0.0.1 at 2011-10-07 17:30:30 -0400
+Served asset /jquery.js - 200 OK (43ms)
+
+
+Started GET "/assets/comments.js?body=1" for 127.0.0.1 at 2011-10-07 17:30:31 -0400
+Served asset /comments.js - 200 OK (25ms)
+
+
+Started GET "/assets/comment_votes.js?body=1" for 127.0.0.1 at 2011-10-07 17:30:31 -0400
+Served asset /comment_votes.js - 200 OK (24ms)
+
+
+Started GET "/assets/jquery_ujs.js?body=1" for 127.0.0.1 at 2011-10-07 17:30:31 -0400
+Served asset /jquery_ujs.js - 200 OK (82ms)
+
+
+Started GET "/assets/jquery-ui-1.8.13.custom.min.js?body=1" for 127.0.0.1 at 2011-10-07 17:30:31 -0400
+Served asset /jquery-ui-1.8.13.custom.min.js - 200 OK (116ms)
+
+
+Started GET "/assets/posts.js?body=1" for 127.0.0.1 at 2011-10-07 17:30:31 -0400
+Served asset /posts.js - 200 OK (18ms)
+
+
+Started GET "/assets/users.js?body=1" for 127.0.0.1 at 2011-10-07 17:30:31 -0400
+Served asset /users.js - 200 OK (26ms)
+
+
+Started GET "/assets/votes.js?body=1" for 127.0.0.1 at 2011-10-07 17:30:31 -0400
+Served asset /votes.js - 200 OK (24ms)
+
+
+Started GET "/assets/application.js?body=1" for 127.0.0.1 at 2011-10-07 17:30:31 -0400
+Served asset /application.js - 200 OK (39ms)
+
+
+Started GET "/javascripts/jquery-ui-1.8.13.custom.min.js" for 127.0.0.1 at 2011-10-07 17:30:31 -0400
+
+ActionController::RoutingError (No route matches [GET] "/javascripts/jquery-ui-1.8.13.custom.min.js"):
+  
+
+Rendered C:/RailsInstaller/Ruby1.9.2/lib/ruby/gems/1.9.1/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (1.0ms)
+
+
+Started GET "/posts" for 127.0.0.1 at 2011-10-07 17:30:43 -0400
+  Processing by PostsController#index as HTML
+  [1m[36mPost Load (1.0ms)[0m  [1mSELECT "posts".* FROM "posts" ORDER BY numVotes DESC, created_at DESC LIMIT 5[0m
+Rendered posts/_form_show_post_and_comments_page.erb (10.0ms)
+Rendered posts/index.html.erb within layouts/application (171.0ms)
+Completed 200 OK in 197ms (Views: 192.0ms | ActiveRecord: 1.0ms)
+
+
+Started GET "/javascripts/jquery-ui-1.8.13.custom.min.js" for 127.0.0.1 at 2011-10-07 17:30:43 -0400
+
+ActionController::RoutingError (No route matches [GET] "/javascripts/jquery-ui-1.8.13.custom.min.js"):
+  
+
+Rendered C:/RailsInstaller/Ruby1.9.2/lib/ruby/gems/1.9.1/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (0.0ms)
+
+
+Started GET "/assets/ui-lightness/images/ui-bg_glass_100_f6f6f6_1x400.png" for 127.0.0.1 at 2011-10-07 17:30:44 -0400
+Served asset /ui-lightness/images/ui-bg_glass_100_f6f6f6_1x400.png - 404 Not Found (3ms)
+
+ActionController::RoutingError (No route matches [GET] "/assets/ui-lightness/images/ui-bg_glass_100_f6f6f6_1x400.png"):
+  
+
+Rendered C:/RailsInstaller/Ruby1.9.2/lib/ruby/gems/1.9.1/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (0.0ms)
+
+
+Started GET "/assets/ui-lightness/images/ui-bg_glass_65_ffffff_1x400.png" for 127.0.0.1 at 2011-10-07 17:30:44 -0400
+Served asset /ui-lightness/images/ui-bg_glass_65_ffffff_1x400.png - 404 Not Found (3ms)
+
+ActionController::RoutingError (No route matches [GET] "/assets/ui-lightness/images/ui-bg_glass_65_ffffff_1x400.png"):
+  
+
+Rendered C:/RailsInstaller/Ruby1.9.2/lib/ruby/gems/1.9.1/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (1.0ms)
+
+
+Started GET "/assets/ui-lightness/images/ui-bg_highlight-soft_100_eeeeee_1x100.png" for 127.0.0.1 at 2011-10-07 17:30:44 -0400
+Served asset /ui-lightness/images/ui-bg_highlight-soft_100_eeeeee_1x100.png - 404 Not Found (7ms)
+
+ActionController::RoutingError (No route matches [GET] "/assets/ui-lightness/images/ui-bg_highlight-soft_100_eeeeee_1x100.png"):
+  
+
+Rendered C:/RailsInstaller/Ruby1.9.2/lib/ruby/gems/1.9.1/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (1.0ms)
+
+
+Started GET "/assets/ui-lightness/images/ui-bg_gloss-wave_35_f6a828_500x100.png" for 127.0.0.1 at 2011-10-07 17:30:44 -0400
+Served asset /ui-lightness/images/ui-bg_gloss-wave_35_f6a828_500x100.png - 404 Not Found (3ms)
+
+ActionController::RoutingError (No route matches [GET] "/assets/ui-lightness/images/ui-bg_gloss-wave_35_f6a828_500x100.png"):
+  
+
+Rendered C:/RailsInstaller/Ruby1.9.2/lib/ruby/gems/1.9.1/gems/actionpack-3.1.0/lib/action_dispatch/middleware/templates/rescues/routing_error.erb within rescues/layout (0.0ms)
